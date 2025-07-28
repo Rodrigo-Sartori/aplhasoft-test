@@ -12,7 +12,6 @@ export class ContactService {
   private userRepo = AppDataSource.getRepository(User)
 
   async create(contactDto: CreateContactDto, picture: Express.Multer.File): Promise<Contact> {
-    console.log(contactDto)
     if(!contactDto.userId){
       throw new Error("Contact without a user associated")
     }
@@ -51,6 +50,10 @@ export class ContactService {
   }
 
   async deleteContact(id: number) {
-    await this.contactRepo.delete(id)
+    const contact = await this.contactRepo.findOneBy({id});
+    if (!contact) {
+    return res.status(404).json({ message: 'Contact not found' });
+  }
+  await this.contactRepo.remove({id})
   }
 }

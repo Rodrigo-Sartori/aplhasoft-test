@@ -14,11 +14,9 @@ export class AuthService{
         return this.userRepo.save(createdUser)
     }
     async login(userdto: UserDto) {
-    console.log(JSON.stringify(userdto))
     const user = await this.userRepo.findOneBy({ email: userdto.email });
-    console.log(JSON.stringify(user))
     if (!user || !(await bcrypt.compare(userdto.password, user.password))) {
-      throw new Error("Usuário ou senha inválidos");
+      throw new Error("User or password invalids");
     }
 
     return generateToken(user);

@@ -15,7 +15,6 @@ export class ContactController{
         return res.status(400).json({ message: 'does not contain a picture' });
       }
       const userDto = plainToInstance(CreateContactDto, req.body);
-      console.log(JSON.stringify(userDto))
       userDto.userId = user ? user.id : 0
       const errors = await validate(userDto);
       if (errors.length > 0) {
@@ -57,7 +56,7 @@ export class ContactController{
   async deleteContact(req: Request, res: Response){
     const {id} = req.params
     this.service.deleteContact(parseInt(id))
-    return res.status(200);
+    return res.status(200).send();
   }
 }
 

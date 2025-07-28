@@ -15,6 +15,6 @@ export default defineConfig({
     },
 },
 server:{
-    allowedHosts: [process.env.NGROK_URL!]
+    allowedHosts: [process.env.BACK_URL!]
 }
 });

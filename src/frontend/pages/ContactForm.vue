@@ -2,19 +2,19 @@
   <div class="form-page">
     <h1>{{ isEdit ? 'Editar Contato' : 'Novo Contato' }}</h1>
     <form @submit.prevent="handleSubmit" class="contact-form">
-      <label>Nome:</label>
+      <label>Name:</label>
       <input v-model="contact.name" type="text" required />
 
       <label>Email:</label>
       <input v-model="contact.email" type="email" required />
 
-      <label>Telefone:</label>
+      <label>Contact phone:</label>
       <input v-model="contact.contact" type="text" required />
 
-      <label>Foto:</label>
+      <label>Picture:</label>
       <input type="file" @change="handleFile" />
 
-      <button type="submit">{{ isEdit ? 'Atualizar' : 'Criar' }}</button>
+      <button type="submit">{{ isEdit ? 'Update' : 'Create' }}</button>
     </form>
   </div>
 </template>
@@ -55,11 +55,11 @@ export default defineComponent({
 
     const fetchContact = async (id: string) => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/contacts/${id}`);
+        const res = await axios.get(`https://11cb8c901a3b.ngrok-free.app/api/contacts/${id}`);
         contact.value = res.data;
         isEdit.value = true;
       } catch (err) {
-        console.error('Erro ao buscar contato:', err);
+        console.error('Contact was not found:', err);
       }
     };
 
@@ -73,17 +73,17 @@ export default defineComponent({
       try {
         const token = localStorage.getItem('token');
         if (isEdit.value && contact.value.id) {
-          await axios.put(`http://localhost:3000/api/contacts/${contact.value.id}`, formData, {
+          await axios.put(`https://11cb8c901a3b.ngrok-free.app/api/contacts/${contact.value.id}`, formData, {
             headers: {Authorization: `Bearer ${token}`}
           });
         } else {
-          await axios.post('http://localhost:3000/api/contacts', formData,{
+          await axios.post(`https://11cb8c901a3b.ngrok-free.app/api/contacts`, formData,{
             headers: {Authorization: `Bearer ${token}`}
           });
         }
         router.push('/agenda');
       } catch (err) {
-        console.error('Erro ao salvar contato:', err);
+        console.error('Contact was not found:', err);
       }
     };
 
@@ -107,8 +107,18 @@ export default defineComponent({
 <style scoped>
 .form-page {
   max-width: 500px;
-  margin: auto;
+  margin: 2rem auto;
   padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
 }
 
 .contact-form {
@@ -117,9 +127,42 @@ export default defineComponent({
   gap: 1rem;
 }
 
-input,
-button {
-  padding: 0.5rem;
+label {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: -0.4rem;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='file'] {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+input[type='text']:focus,
+input[type='email']:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button[type='submit'] {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type='submit']:hover {
+  background-color: #0056b3;
 }
 </style>

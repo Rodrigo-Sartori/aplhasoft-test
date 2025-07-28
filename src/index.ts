@@ -7,7 +7,7 @@ import path from 'path'
 const app = express()
 app.use(express.json())
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') {
@@ -15,6 +15,7 @@ app.use((req, res, next) => {
   }
  next();
 });
+
 app.use('/api', apiRoutes)
 app.use(express.static(path.join(__dirname, '../dist')));
 
@@ -25,5 +26,5 @@ app.get('/*\w', (req, res) => {
 
 AppDataSource.initialize().then(() => {
   console.log('Database connected')
-  app.listen(3000, () => console.log('Server is running 🚀'))
+  app.listen(3000, () => console.log('Server is running'))
 })

@@ -5,7 +5,6 @@ export class AuthController {
   private authService = new AuthService();
 
   async login(req: Request, res: Response) {
-    console.log("chegou aqui")
     try {
       const token = await this.authService.login(req.body);
       res.json({ token });

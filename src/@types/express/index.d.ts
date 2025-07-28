@@ -3,7 +3,10 @@ import { User } from '../../model/User'; // ajuste o caminho conforme seu projet
 declare global {
   namespace Express {
     interface Request {
-      user?: User; // Ou algo como { id: number; email: string; }
+      user?: {
+            id: number;
+            email: string;
+        }; // Ou algo como { id: number; email: string; }
     }
   }
 }

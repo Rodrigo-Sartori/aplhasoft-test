@@ -13,6 +13,9 @@
 
       <label>Picture:</label>
       <input type="file" @change="handleFile" />
+      <img v-if="imagePreview" :src="imagePreview" alt="Imagem atual"
+      style="max-height: 150px; margin-top: 10px; border-radius: 8px"
+      />
 
       <button type="submit">{{ isEdit ? 'Update' : 'Create' }}</button>
     </form>
@@ -38,6 +41,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const isEdit = ref(false);
+    const imagePreview = ref<string | null>(null);
     const contact = ref<Contact>({
       name: '',
       email: '',
@@ -49,14 +53,23 @@ export default defineComponent({
     const handleFile = (event: Event) => {
       const target = event.target as HTMLInputElement;
       if (target.files?.[0]) {
-        file.value = target.files[0];
-      }
-    };
+      file.value = target.files[0];
+      imagePreview.value = URL.createObjectURL(file.value);
+    }
+};
 
     const fetchContact = async (id: string) => {
       try {
-        const res = await axios.get(`https://11cb8c901a3b.ngrok-free.app/api/contacts/${id}`);
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`/api/contacts/${id}`,{
+            headers: {Authorization: `Bearer ${token}`}
+          });
         contact.value = res.data;
+        if (res.data.picture) {
+        imagePreview.value = res.data.picture.startsWith('data:')
+        ? res.data.picture
+        : `data:image/jpeg;base64,${res.data.picture}`;
+        }
         isEdit.value = true;
       } catch (err) {
         console.error('Contact was not found:', err);
@@ -73,11 +86,11 @@ export default defineComponent({
       try {
         const token = localStorage.getItem('token');
         if (isEdit.value && contact.value.id) {
-          await axios.put(`https://11cb8c901a3b.ngrok-free.app/api/contacts/${contact.value.id}`, formData, {
+          await axios.put(`/api/contacts/${contact.value.id}`, formData, {
             headers: {Authorization: `Bearer ${token}`}
           });
         } else {
-          await axios.post(`https://11cb8c901a3b.ngrok-free.app/api/contacts`, formData,{
+          await axios.post(`/api/contacts`, formData,{
             headers: {Authorization: `Bearer ${token}`}
           });
         }
@@ -98,7 +111,8 @@ export default defineComponent({
       contact,
       isEdit,
       handleFile,
-      handleSubmit
+      handleSubmit,
+      imagePreview
     };
   }
 });

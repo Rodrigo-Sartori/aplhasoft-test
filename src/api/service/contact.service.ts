@@ -2,9 +2,9 @@ import { IsNull } from "typeorm";
 import { AppDataSource } from "../config/data-source";
 import { CreateContactDto } from "../controller/dto/create.contact.dto";
 import { Contact } from "../model/Contact";
-import { User } from "../model/User";
 import { UpdateContactDto } from "../controller/dto/update.contact.dto";
 import { plainToInstance } from "class-transformer";
+import { User } from "../model/User";
 
 
 export class ContactService {
@@ -30,7 +30,7 @@ export class ContactService {
     const contactList =  await this.contactRepo.find()
     return contactList.map(contact =>({
       ...contact,
-      picture: contact.picture?.toString('base64')
+      pictureString: contact.picture?.toString('base64')
     }));
   }
 
@@ -38,7 +38,8 @@ export class ContactService {
     const contact = await this.contactRepo.findOneBy({id})
     if(contact == null){
         throw new Error("Contact not found")
-    }
+    } 
+    contact.pictureString = `data:image/jpeg;base64,${Buffer.from(contact.picture).toString('base64')}`
     return contact;
   }
 
@@ -52,8 +53,8 @@ export class ContactService {
   async deleteContact(id: number) {
     const contact = await this.contactRepo.findOneBy({id});
     if (!contact) {
-    return res.status(404).json({ message: 'Contact not found' });
+    return false
   }
-  await this.contactRepo.remove({id})
+  await this.contactRepo.remove(contact)
   }
 }

@@ -1,3 +1,4 @@
+import { JsonContains } from "typeorm";
 import { AppDataSource } from "../config/data-source";
 import { generateToken } from "../config/jwt";
 import { UserDto } from "../controller/dto/auth.dto";
@@ -18,7 +19,6 @@ export class AuthService{
     if (!user || !(await bcrypt.compare(userdto.password, user.password))) {
       throw new Error("User or password invalids");
     }
-
     return generateToken(user);
   }
 }

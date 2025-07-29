@@ -10,14 +10,16 @@ export class Contact{
     @Column()
     name: String;
 
-    @Column()
+    @Column({unique: true})
     contact: String;
     
-    @Column()
+    @Column({unique: true})
     email: String;
 
     @Column({type: "mediumblob"})
     picture: Buffer;
+
+    pictureString: String;
 
     @ManyToOne(()=> User, user=> user.contacts)
     user:User;

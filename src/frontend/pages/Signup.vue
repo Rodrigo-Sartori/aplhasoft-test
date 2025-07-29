@@ -1,11 +1,11 @@
 <template>
   <div class="signup-container">
-    <h2>Criar Conta</h2>
+    <h2>Create account</h2>
     <form @submit.prevent="signup">
       <input v-model="name" type="text" placeholder="Name" required />
       <input v-model="email" type="email" placeholder="Email" required />
       <input v-model="password" type="password" placeholder="Password" required />
-      <button type="submit">Cadastrar</button>
+      <button type="submit">Register</button>
     </form>
     <p>Already signed up? <router-link to="/">Back to login Screen</router-link></p>
   </div>
@@ -15,7 +15,6 @@
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import * as dotenv from 'dotenv'
 
 export default defineComponent({
   setup() {
@@ -23,11 +22,11 @@ export default defineComponent({
     const email = ref('');
     const password = ref('');
     const router = useRouter();
+    
 
     const signup = async () => {
       try {
-        dotenv.config()
-        await axios.post(`https://11cb8c901a3b.ngrok-free.app /api/auth/register`, {
+        await axios.post(`/api/auth/register`, {
           name: name.value,
           email: email.value,
           password: password.value,

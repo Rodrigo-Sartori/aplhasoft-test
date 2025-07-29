@@ -55,7 +55,9 @@ export class ContactController{
   
   async deleteContact(req: Request, res: Response){
     const {id} = req.params
-    this.service.deleteContact(parseInt(id))
+    if(! this.service.deleteContact(parseInt(id))){
+      res.status(404).json({ message: 'Contact not found' });
+    }
     return res.status(200).send();
   }
 }

@@ -25,7 +25,7 @@ export default defineComponent({
     const login = async () => {
       try {
         const res = 
-        await axios.post(`https://11cb8c901a3b.ngrok-free.app/api/auth/login`, {
+        await axios.post(`/api/auth/login`, {
           email: email.value,
           password: password.value,
         });

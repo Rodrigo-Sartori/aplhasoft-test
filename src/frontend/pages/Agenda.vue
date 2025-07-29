@@ -57,7 +57,7 @@ export default defineComponent({
 
     const fetchContacts = async () => {
       try {
-        const response = await axios.get(`https://11cb8c901a3b.ngrok-free.app/api/contacts`, {
+        const response = await axios.get(`/api/contacts`, {
         });
         contacts.value = response.data;
       } catch (error) {
@@ -78,7 +78,7 @@ export default defineComponent({
     const confirmDelete = async () => {
       const token = localStorage.getItem('token');
       if (selectedId.value !== null) {
-        await axios.delete(`https://11cb8c901a3b.ngrok-free.app/api/contacts/${selectedId.value}`,{
+        await axios.delete(`/api/contacts/${selectedId.value}`,{
             headers: {Authorization: `Bearer ${token}`}
           });
         await fetchContacts();
@@ -88,7 +88,7 @@ export default defineComponent({
 
     const getImageUrl = (base64: string): string => {
       if (!base64) return '';
-      return `data:image/jpeg;base64,${base64}`;
+      return `data:image/png;base64,${base64}`;
     };
 
     onMounted(fetchContacts);

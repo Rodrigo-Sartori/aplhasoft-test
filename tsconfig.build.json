@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./distServer",
+    "rootDir": "./src"
+  },
+  "include": [
+    "src/index.ts",
+    "src/api",
+    "src/@types"
+  ],
+  "exclude": [
+    "src/frontend"
+  ]
+}
